@@ -18,8 +18,7 @@ document.getElementById('apod-form').addEventListener('submit', function(e) {
     resultDiv.style.display = 'none';
     placeholderDiv.style.display = 'none';
 
-    // Replace 'DEMO_KEY' with your actual NASA API key from https://api.nasa.gov/
-    const apiKey = 'DEMO_KEY';
+    const apiKey = 'S5am93lLMtQR7xQQEVfTSn9HBPIllFBYNmuIgZ4w';
 
     fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${selectedDate}`)
         .then(response => {
