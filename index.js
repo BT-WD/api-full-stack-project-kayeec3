@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'nasa_apod_history';
+const FIRST_APOD_DATE = '1995-06-16';
 
 function getHistory() {
     const history = localStorage.getItem(STORAGE_KEY);
@@ -50,6 +51,14 @@ function clearHistory() {
         localStorage.removeItem(STORAGE_KEY);
         displayHistory();
     }
+}
+
+function getRandomDate() {
+    const start = new Date(FIRST_APOD_DATE);
+    const end = new Date();
+    const randomTime = start.getTime() + Math.random() * (end.getTime() - start.getTime());
+    const randomDate = new Date(randomTime);
+    return randomDate.toISOString().split('T')[0];
 }
 
 function fetchAPOD(selectedDate) {
@@ -117,11 +126,22 @@ dateInput.max = today;
 
 displayHistory();
 
-// Form submit
 document.getElementById('apod-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const selectedDate = document.getElementById('date').value;
     fetchAPOD(selectedDate);
+});
+
+document.getElementById('random-btn').addEventListener('click', function() {
+    const randomDate = getRandomDate();
+    document.getElementById('date').value = randomDate;
+    
+    this.classList.add('spinning');
+    setTimeout(() => {
+        this.classList.remove('spinning');
+    }, 500);
+    
+    fetchAPOD(randomDate);
 });
 
 document.getElementById('clear-history').addEventListener('click', clearHistory);
