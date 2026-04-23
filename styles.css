@@ -6,13 +6,13 @@
 
 body {
     font-family: system-ui, -apple-system, sans-serif;
-    background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, rgb(15, 23, 42), rgb(88, 28, 135), rgb(15, 23, 42));
     padding: 32px;
-    color: white;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 896px;
     margin: 0 auto;
 }
 
@@ -22,57 +22,171 @@ body {
 }
 
 .header h1 {
-    font-size: 36px;
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
     margin-bottom: 8px;
 }
 
 .header p {
-    color: #e9d5ff;
+    color: rgb(233, 213, 255);
 }
 
-.card {
+.date-picker {
     background: rgba(255, 255, 255, 0.1);
-    padding: 24px;
+    backdrop-filter: blur(12px);
     border-radius: 16px;
-    backdrop-filter: blur(10px);
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-.card h2 {
-    font-size: 28px;
+.date-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+}
+
+.date-form label {
+    color: white;
+}
+
+.date-form input[type="date"] {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(216, 180, 254, 0.3);
+    outline: none;
+}
+
+.date-form input[type="date"]:focus {
+    border-color: rgb(192, 132, 252);
+}
+
+.date-form button {
+    padding: 8px 24px;
+    background: rgb(147, 51, 234);
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.date-form button:hover {
+    background: rgb(126, 34, 206);
+}
+
+#loading {
+    display: none;
+    text-align: center;
+    color: white;
+    padding: 24px;
+}
+
+#error {
+    display: none;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgb(239, 68, 68);
+    color: rgb(254, 226, 226);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+#result {
+    display: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.result-header {
+    padding: 24px;
+}
+
+#apod-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
     margin-bottom: 8px;
 }
 
-.date {
-    color: #e9d5ff;
+#apod-date {
+    color: rgb(233, 213, 255);
     margin-bottom: 16px;
+}
+
+#apod-copyright {
+    font-size: 14px;
+    color: rgb(216, 180, 254);
+    margin-bottom: 16px;
+    display: none;
 }
 
 #media-container img,
 #media-container iframe {
     width: 100%;
-    border-radius: 12px;
-    margin-bottom: 16px;
+    display: block;
 }
 
-h3 {
-    margin-bottom: 8px;
+#media-container iframe {
+    aspect-ratio: 16/9;
+    border: none;
 }
 
-p {
-    line-height: 1.6;
-    color: #f3e8ff;
+.result-footer {
+    padding: 24px;
 }
 
-a {
+.result-footer h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 12px;
+}
+
+#apod-description {
+    color: rgb(243, 232, 255);
+    line-height: 1.625;
+}
+
+.hd-link {
     display: inline-block;
     margin-top: 16px;
     padding: 8px 16px;
-    background: #9333ea;
+    background: rgb(147, 51, 234);
     color: white;
-    text-decoration: none;
     border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
 }
 
-a:hover {
-    background: #7e22ce;
+.hd-link:hover {
+    background: rgb(126, 34, 206);
+}
+
+#placeholder {
+    text-align: center;
+    color: rgb(233, 213, 255);
+    margin-top: 48px;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 16px;
+    }
+
+    .header h1 {
+        font-size: 32px;
+    }
+
+    #apod-title {
+        font-size: 24px;
+    }
 }
