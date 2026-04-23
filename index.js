@@ -1,13 +1,58 @@
+const STORAGE_KEY = 'nasa_apod_history';
 
-const today = new Date().toISOString().split('T')[0];
-const dateInput = document.getElementById('date');
-dateInput.value = today;
-dateInput.max = today;
+function getHistory() {
+    const history = localStorage.getItem(STORAGE_KEY);
+    return history ? JSON.parse(history) : [];
+}
 
-document.getElementById('apod-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+function saveToHistory(date) {
+    let history = getHistory();
+    
+    history = history.filter(d => d !== date);
+    
+    history.unshift(date);
+    
+    if (history.length > 20) {
+        history = history.slice(0, 20);
+    }
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    displayHistory();
+}
 
-    const selectedDate = document.getElementById('date').value;
+function displayHistory() {
+    const history = getHistory();
+    const historySection = document.getElementById('history-section');
+    const historyList = document.getElementById('history-list');
+    
+    if (history.length === 0) {
+        historySection.classList.remove('show');
+        return;
+    }
+    
+    historySection.classList.add('show');
+    historyList.innerHTML = '';
+    
+    history.forEach(date => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.textContent = date;
+        item.addEventListener('click', () => {
+            document.getElementById('date').value = date;
+            fetchAPOD(date);
+        });
+        historyList.appendChild(item);
+    });
+}
+
+function clearHistory() {
+    if (confirm('Are you sure you want to clear your viewing history?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        displayHistory();
+    }
+}
+
+function fetchAPOD(selectedDate) {
     const loadingDiv = document.getElementById('loading');
     const errorDiv = document.getElementById('error');
     const resultDiv = document.getElementById('result');
@@ -55,10 +100,28 @@ document.getElementById('apod-form').addEventListener('submit', function(e) {
             } else {
                 hdLinkContainer.innerHTML = '';
             }
+
+            saveToHistory(selectedDate);
         })
         .catch(err => {
             loadingDiv.style.display = 'none';
             errorDiv.textContent = err.message;
             errorDiv.style.display = 'block';
         });
+}
+
+const today = new Date().toISOString().split('T')[0];
+const dateInput = document.getElementById('date');
+dateInput.value = today;
+dateInput.max = today;
+
+displayHistory();
+
+// Form submit
+document.getElementById('apod-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const selectedDate = document.getElementById('date').value;
+    fetchAPOD(selectedDate);
 });
+
+document.getElementById('clear-history').addEventListener('click', clearHistory);
